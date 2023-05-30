@@ -27,14 +27,8 @@ class MainActivity : AppCompatActivity(), WordAdapter.ItemClickListener {
 
 
     private fun initRecylerView(){
-        val dummyList = mutableListOf(
-            Word("weather", "날씨","명사"),
-            Word("weather", "날씨","명사"),
-            Word("weather", "날씨","명사")
-        )
-        // 어댑터 선언 시 WordAdapter()클래스의 인자값이 val list: MutableList<Word>이기에
-        // dummyList란 일시적인 뮤터블리스트를 만든 뒤 대입한다.
-        wordAdapter = WordAdapter(dummyList,this)
+
+        wordAdapter = WordAdapter(mutableListOf(),this)
 
 
         // 리사이클러뷰랑 어댑터 연결
