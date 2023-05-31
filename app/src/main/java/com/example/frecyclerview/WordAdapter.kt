@@ -12,7 +12,7 @@ import com.example.frecyclerview.databinding.ItemWordBinding
 // 이너클래스라서 사용할 때는 클래스이름.클래스이름을 쓴다.
 // WordAdapter는 Word데이터클래스를 변경가능한 리스트 형태로 받는다.
 class WordAdapter(
-    private val list: MutableList<Word>,
+    val list: MutableList<Word>,
     // 클릭리스너의 속성을 ItemClickListener(인터페이스)로 정의
     private val itemClickListener: ItemClickListener? = null
     ) : RecyclerView.Adapter<WordAdapter.WordViewHolder>() {

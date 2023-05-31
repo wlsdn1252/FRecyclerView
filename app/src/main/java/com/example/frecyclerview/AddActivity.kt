@@ -1,5 +1,6 @@
 package com.example.frecyclerview
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -54,6 +55,10 @@ class AddActivity : AppCompatActivity() {
             runOnUiThread{
                 Toast.makeText(this, "저장 완료", Toast.LENGTH_SHORT).show()
             }
+            // 낭비최소화를 위한구문
+            // 데이터입력 후 저장버튼을 누르면
+            val intent = Intent().putExtra("isUpdate",true)
+            setResult(RESULT_OK,intent)
             finish()
         }.start()
         
