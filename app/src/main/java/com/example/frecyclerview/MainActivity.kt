@@ -30,6 +30,21 @@ class MainActivity : AppCompatActivity(), WordAdapter.ItemClickListener {
             updateAddWord()
         }
     }
+
+
+    // 값 수정하기
+    private val updateEditWordResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult())
+        { result ->
+
+        // ??
+        val editWord = result.data?.getParcelableExtra<Word>("editWord")
+
+        // ??
+        if(result.resultCode == RESULT_OK && editWord != null){
+            updateEditWord(editWord)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -46,6 +61,10 @@ class MainActivity : AppCompatActivity(), WordAdapter.ItemClickListener {
 
         binding.deleteImageView.setOnClickListener {
             delete()
+        }
+
+        binding.editImageView.setOnClickListener {
+            edit()
         }
     }
 
@@ -106,6 +125,17 @@ class MainActivity : AppCompatActivity(), WordAdapter.ItemClickListener {
         }.start()
     }
 
+    // dD값 수정
+    private fun updateEditWord(word: Word){
+        val index = wordAdapter.list.indexOfFirst { it.id == word.id }
+        wordAdapter.list[index] = word
+        runOnUiThread {
+            selectedWord = word
+            wordAdapter.notifyItemChanged(index)
+            binding.textTextView.text = word.text
+            binding.meanTextView.text = word.mean
+        }
+    }
     // 제거버튼 클릭 시
     private fun delete(){
         // 만약 아이템을 선택하지 않고 사젝버튼을 눌렀을 때
@@ -133,6 +163,13 @@ class MainActivity : AppCompatActivity(), WordAdapter.ItemClickListener {
         }.start()
     }
 
+
+    // putExtra를 사용하여 기존 데이터값을 넘긴다.
+    private fun edit(){
+        if(selectedWord == null) return
+        val intent = Intent(this,AddActivity::class.java).putExtra("originWord",selectedWord)
+        updateEditWordResult.launch(intent)
+    }
     
     // 어댑터 클래스의 클릭을 위한 인터페이스를 활용
     override fun onClick(word: Word) {

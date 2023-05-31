@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/deleteImageView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="단어입니다." />
 
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="start"
-        app:constraint_referenced_ids="deleteImageView,editImageView"/>
+        app:constraint_referenced_ids="deleteImageView,editImageView" />
 
     <View
         android:id="@+id/line"
@@ -68,18 +68,18 @@
         android:id="@+id/wordRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/line"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
         android:id="@+id/addButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_add_24"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="30dp"
         android:backgroundTint="#EACECE"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:src="@drawable/baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

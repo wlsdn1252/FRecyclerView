@@ -4,11 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.view.children
 import com.example.frecyclerview.databinding.ActivityAddBinding
 import com.google.android.material.chip.Chip
 
 class AddActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddBinding
+    private var originWord : Word? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddBinding.inflate(layoutInflater)
@@ -16,7 +18,9 @@ class AddActivity : AppCompatActivity() {
 
         initViews()
         binding.addButton.setOnClickListener {
-            add()
+            //추가버튼 클릭시 기존 데이터에 값이 없으면 추가 있으면 수정하겠다.
+            if(originWord == null) add() else edit()
+
         }
     }
 
@@ -27,6 +31,15 @@ class AddActivity : AppCompatActivity() {
             types.forEach{text ->
                 addView(createChip(text))
             }
+        }
+
+        // getExtra로 받아와서 기존에 있던 데이터 화면에 뿌리기
+        originWord = intent.getParcelableExtra("originWord")
+        originWord?.let { word ->
+            binding.textInputEditText.setText(word.text)
+            binding.meanTextInputEditText.setText(word.mean)
+            val selectedChip = binding.typeChipGroup.children.firstOrNull{(it as Chip).text == word.type}as? Chip
+            selectedChip?.isCheckable = true
         }
     }
 
@@ -61,8 +74,26 @@ class AddActivity : AppCompatActivity() {
             setResult(RESULT_OK,intent)
             finish()
         }.start()
-        
+    }
 
+    // DB값 수정할 떄
+    private fun edit(){
+        // 기존 DB에 저장되있던 데이터를 들고온다.
+        val text = binding.textInputEditText.text.toString()
+        val mean = binding.meanTextInputEditText.text.toString()
+        val type = findViewById<Chip>(binding.typeChipGroup.checkedChipId).text.toString()
+        // 값을 똑같이 받아온 후 해당 값을 변경한다.
+        val editword = originWord?.copy(text = text, mean = mean, type = type)
+
+        Thread{
+            editword?.let {word ->
+                AppDatabase.getInstance(this)?.wordDao()?.update(word)
+                val intent = Intent().putExtra("editWord",editword)
+                setResult(RESULT_OK,intent)
+                runOnUiThread { Toast.makeText(this, "수정완료", Toast.LENGTH_SHORT).show() }
+                finish()
+            }
+        }.start()
 
     }
 
